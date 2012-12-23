@@ -62,4 +62,5 @@ group :test do
 	gem 'spork'
         gem "sqlite3-ruby", "~> 1.3.2", :require => "sqlite3"
         gem 'annotate'
+  gem 'factory_girl_rails'
 end
