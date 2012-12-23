@@ -7,7 +7,7 @@ gem 'rails', '3.2.9'
 
 
 
-
+gem 'gravatar_image_tag'
 
 
 group :production, :staging do
