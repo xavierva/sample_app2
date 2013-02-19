@@ -13,8 +13,13 @@ class SessionsController < ApplicationController
     else
       # Authentifie l'utilisateur et redirige vers la page d'affichage.
       sign_in user
+<<<<<<< HEAD
       redirect_to user
     end
+=======
+      redirect_back_or user
+  end
+>>>>>>> updating-users
     
   end
   
