@@ -252,6 +252,99 @@ describe UsersController do
       
   end
   
+  describe "GET 'index'" do
 
+  describe "pour utilisateur non identifiés" do
+       it "devrait refuser l'accès" do
+         get :index
+         response.should redirect_to(signin_path)
+         flash[:notice].should =~ /identifier/i
+       end
+  end
+
+    describe "pour un utilisateur identifié" do
+
+      before(:each) do
+         @user = test_sign_in(FactoryGirl.create  (:user))
+         second = FactoryGirl.create(:user, :email => "another@example.com")
+         third  = FactoryGirl.create(:user, :email => "another@example.net")
+         
+         @users = [@user, second, third]
+                 31.times do
+                   @users << FactoryGirl.create(:user, :email => FactoryGirl.generate(:email))
+                 end
+      end
+
+       it "devrait réussir" do
+         get :index
+         response.should be_success
+       end
+
+       it "devrait avoir un élément pour chaque utilisateur" do
+               get :index
+               @users[0..2].each do |user|
+                 response.should have_selector("li", :content => user.nom)
+               end
+        end
+
+       it "devrait avoir le bon titre" do
+         get :index
+         response.should have_selector("title", :content => "Tous les utilisateurs")
+       end
+       
+       it "devrait paginer les utilisateurs" do
+              get :index
+              response.should have_selector("div.pagination")
+              response.should have_selector("span.disabled", :content => "Previous")
+              response.should have_selector("a", :href => "/users?page=2",
+                                                 :content => "2")
+              response.should have_selector("a", :href => "/users?page=2",
+                                                 :content => "Next")
+        end
+       
+    end
+     
+  end
+    
+    describe "DELETE 'destroy'" do
+
+        before(:each) do
+          @user = FactoryGirl.create(:user)
+        end
+
+        describe "en tant qu'utilisateur non identifié" do
+          it "devrait refuser l'accès" do
+            delete :destroy, :id => @user
+            response.should redirect_to(signin_path)
+          end
+        end
+
+        describe "en tant qu'utilisateur non administrateur" do
+          it "devrait protéger la page" do
+            test_sign_in(@user)
+            delete :destroy, :id => @user
+            response.should redirect_to(root_path)
+          end
+        end
+
+        describe "en tant qu'administrateur" do
+
+          before(:each) do
+            admin = FactoryGirl.create(:user, :email => "admin@example.com", :admin => true)
+            test_sign_in(admin)
+          end
+
+          it "devrait détruire l'utilisateur" do
+            lambda do
+              delete :destroy, :id => @user
+            end.should change(User, :count).by(-1)
+          end
+
+          it "devrait rediriger vers la page des utilisateurs" do
+            delete :destroy, :id => @user
+            response.should redirect_to(users_path)
+          end
+        end
+    end
 
 end
