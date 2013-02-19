@@ -2387,6 +2387,7 @@ REQUESTING PAGE: GET /users/1/edit with {} and HTTP headers {}
 REQUESTING PAGE: GET http://www.example.com/signin with {} and HTTP headers {"HTTP_REFERER"=>"/users/1/edit"}
 REQUESTING PAGE: GET /users/1/edit with {} and HTTP headers {}
 REQUESTING PAGE: GET http://www.example.com/signin with {} and HTTP headers {"HTTP_REFERER"=>"/users/1/edit"}
+<<<<<<< HEAD
 REQUESTING PAGE: GET /users/1/edit with {} and HTTP headers {}
 REQUESTING PAGE: GET http://www.example.com/signin with {} and HTTP headers {"HTTP_REFERER"=>"/users/1/edit"}
 REQUESTING PAGE: GET /users/1/edit with {} and HTTP headers {}
@@ -2396,3 +2397,5 @@ REQUESTING PAGE: GET http://www.example.com/signin with {} and HTTP headers {"HT
 REQUESTING PAGE: GET /users/1/edit with {} and HTTP headers {}
 REQUESTING PAGE: GET http://www.example.com/signin with {} and HTTP headers {"HTTP_REFERER"=>"/users/1/edit"}
 >>>>>>> updating-users
+=======
+>>>>>>> parent of e3ed58f... fint 10.5
