@@ -11,7 +11,7 @@ gem 'gravatar_image_tag'
 
 gem 'will_paginate', '3.0.4'
 
-#gem 'faker',  '0.3.1'
+gem 'faker',  '0.3.1'
 
 group :production, :staging do
   gem "pg"
