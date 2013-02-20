@@ -1,6 +1,6 @@
 #!/bin/env ruby
 # encoding: utf-8
-#require 'faker'
+require 'faker'
 
 namespace :db do
   desc "Peupler la base de données"

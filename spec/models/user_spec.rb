@@ -145,4 +145,29 @@ describe User do
         user_with_duplicate_email = User.new(@attr)
         user_with_duplicate_email.should_not be_valid
       end
+      
+      
+      describe "micropost associations" do
+
+          before(:each) do
+            @user = User.create(@attr)
+            @mp1 = FactoryGirl.create(:micropost, :user => @user, :created_at => 1.day.ago)
+            @mp2 = FactoryGirl.create(:micropost, :user => @user, :created_at => 1.hour.ago)
+          end
+
+          it "devrait avoir un attribut `microposts`" do
+            @user.should respond_to(:microposts)
+          end
+
+          it "devrait avoir les bons micro-messags dans le bon ordre" do
+            @user.microposts.should == [@mp2, @mp1]
+          end
+          
+          it "devrait détruire les micro-messages associés" do
+                @user.destroy
+                [@mp1, @mp2].each do |micropost|
+                  Micropost.find_by_id(micropost.id).should be_nil
+                end
+          end
+     end
 end
