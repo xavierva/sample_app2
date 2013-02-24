@@ -21,7 +21,7 @@ describe MicropostsController do
   describe "POST 'create'" do
 
       before(:each) do
-        @user = test_sign_in(Factory(:user))
+        @user = test_sign_in(FactoryGirl.create(:user))
       end
 
       describe "échec" do
@@ -61,10 +61,41 @@ describe MicropostsController do
 
         it "devrait avoir un message flash" do
           post :create, :micropost => @attr
-          flash[:success].should =~ /enregistré/i
+          flash[:success].should =~ /created/i
         end
       end
   end
   
+  describe "DELETE 'destroy'" do
+
+      describe "pour un utilisateur non auteur du message" do
+
+        before(:each) do
+          @user = FactoryGirl.create(:user)
+          wrong_user = FactoryGirl.create(:user, :email => Factory.generate(:email))
+          test_sign_in(wrong_user)
+          @micropost = FactoryGirl.create(:micropost, :user => @user)
+        end
+
+        it "devrait refuser la suppression du message" do
+          delete :destroy, :id => @micropost
+          response.should redirect_to(root_path)
+        end
+      end
+
+      describe "pour l'auteur du message" do
+
+        before(:each) do
+          @user = test_sign_in(FactoryGirl.create(:user))
+          @micropost = FactoryGirl.create(:micropost, :user => @user)
+        end
+
+        it "devrait détruire le micro-message" do
+          lambda do 
+            delete :destroy, :id => @micropost
+          end.should change(Micropost, :count).by(-1)
+        end
+      end
+  end
   
 end

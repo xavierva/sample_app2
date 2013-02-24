@@ -1,3 +1,5 @@
+#!/bin/env ruby
+# encoding: utf-8
 # == Schema Information
 #
 # Table name: users
@@ -8,6 +10,7 @@
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
 #
+
 
 class User < ActiveRecord::Base
   attr_accessor :password
@@ -30,6 +33,12 @@ class User < ActiveRecord::Base
                        :length       => { :within => 6..40 }
                        
   before_save :encrypt_password
+  
+  
+  def feed
+    #  C'est un préliminaire. Cf. chapitre 12 pour l'implémentation complète.
+    Micropost.where("user_id = ?", id)
+  end
   
   # Retour true (vrai) si le mot de passe correspond.
   def has_password?(password_soumis)

@@ -169,5 +169,23 @@ describe User do
                   Micropost.find_by_id(micropost.id).should be_nil
                 end
           end
+          
+          describe "État de l'alimentation" do
+
+                it "devrait avoir une methode `feed`" do
+                  @user.should respond_to(:feed)
+                end
+
+                it "devrait inclure les micro-messages de l'utilisateur" do
+                  @user.feed.include?(@mp1).should be_true
+                  @user.feed.include?(@mp2).should be_true
+                end
+
+                it "ne devrait pas inclure les micro-messages d'un autre utilisateur" do
+                  mp3 = FactoryGirl.create(:micropost,
+                                :user => FactoryGirl.create(:user, :email => FactoryGirl.generate(:email)))
+                  @user.feed.include?(mp3).should be_false
+                end
+          end
      end
 end
