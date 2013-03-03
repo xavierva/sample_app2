@@ -4,7 +4,16 @@ require 'faker'
 
 namespace :db do
   
-  desc "Peupler la base de données"
+  desc "Peupler la base de données avec des échantillons"
+    task :populate => :environment do
+      Rake::Task['db:reset'].invoke
+      make_users
+      make_microposts
+      make_relationships
+    end
+  
+  
+  def make_users
   task :populate => :environment do
     
     Rake::Task['db:reset'].invoke
@@ -23,14 +32,29 @@ namespace :db do
                    :password_confirmation => password)
     end
   end
+  end
   
-  desc "Remplissage de la base de données avec des messages fictifs"
+  def make_microposts
   task :populate => :environment do
   
     User.all(:limit => 6).each do |user|
           50.times do
             user.microposts.create!(:content => Faker::Lorem.sentence(5))
+            user.microposts.create!(:content => content)
           end
     end
   end
+  end
+  
+  def make_relationships
+    users = User.all
+    user  = users.first
+    following = users[1..50]
+    followers = users[3..40]
+    following.each { |followed| user.follow!(followed) }
+    followers.each { |follower| follower.follow!(user) }
+  end
+  
 end
+
+
