@@ -15,9 +15,7 @@ require 'faker'
   
   
   def make_users
-  # task :populate => :environment do
     
-      #Rake::Task['db:reset'].invoke
       administrateur = User.create!(:nom => "Utilisateur exemple",
                   :email => "example@railstutorial.org",
                   :password => "foobar",
@@ -32,11 +30,9 @@ require 'faker'
                         :password => password,
                         :password_confirmation => password)
                   end
-  # end
   end
   
   def make_microposts
-  #task :populate => :environment do
   
     User.all(:limit => 6).each do |user|
           50.times do
@@ -44,11 +40,9 @@ require 'faker'
             user.microposts.create!(:content => content)
           end
     end
-  #end
   end
   
   def make_relationships
-  #  task :populate => :environment do
     users = User.all
     user  = users.first
     following = users[1..50]
@@ -56,7 +50,6 @@ require 'faker'
     following.each { |followed| user.follow!(followed) }
     followers.each { |follower| follower.follow!(user) }
   end
-   # end
 
 
 
