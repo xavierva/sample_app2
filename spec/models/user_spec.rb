@@ -186,6 +186,13 @@ describe User do
                                 :user => FactoryGirl.create(:user, :email => FactoryGirl.generate(:email)))
                   @user.feed.include?(mp3).should be_false
                 end
+                
+                it "devrait inclure les micro-messages des utilisateurs suivis" do
+                        followed = Factory(:user, :email => Factory.next(:email))
+                        mp3 = Factory(:micropost, :user => followed)
+                        @user.follow!(followed)
+                        @user.feed.should include(mp3)
+                end
           end
      end
      
